@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# php switch for homebrew
+# $ brew tap josegonzalez/php && brew install php53 --with-mysql && brew install php54 --with-mysql
+
+# Might as well ask for password up-front, right?
+sudo -v
+
+THIS_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [[ ! -f "$THIS_DIR/php-switch.version" ]]; then
+	echo "5.4" > "$THIS_DIR/php-switch.version"
+fi
+
+version=`cat php-switch.version`
+
+if [[ $version == 5.3 ]]; then
+	ln -sf `brew list php54 | grep libphp` /usr/local/lib/libphp5.so
+	echo "Switched to 5.4"
+	echo `brew info php54 | head -1`
+	echo "5.4" > php-switch.version
+else
+	ln -sf `brew list php53 | grep libphp` /usr/local/lib/libphp5.so
+	echo "Switched to 5.3"
+	echo `brew info php53 | head -1`
+	echo "5.3" > php-switch.version
+fi
+
+sudo apachectl restart

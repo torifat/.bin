@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+play_1=`brew --prefix`'/Cellar/play/1.2.5/bin/play'
+play_2=`brew --prefix`'/Cellar/play/2.0.2/bin/play'
+bin='/usr/local/bin/play'
+current=`play version | tail -1`
+
+function play_switch () {
+    echo Play! is currenly set to version $1
+    echo Switching Play! to version $2
+    rm -f $bin; ln -s $3 $bin
+}
+
+if [[ "$current" = "1.2.5" ]]; then
+    play_switch 1.2.5 2.0.2 $play_2
+else
+    play_switch 2.0.2 1.2.5 $play_1
+fi

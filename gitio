@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [[ $1 == 'find' && $2 != '' ]]; then
+	curl -s -i $2 | awk '/^Location:/ {print $2}'
+elif [[ $1 == 'make' && $2 != '' && $3 != '' ]]; then
+	curl -s -i http://git.io -F "url=$2" -F "code=$3"
+elif [[ $1 == 'make' && $2 != '' ]]; then
+	curl -s -i http://git.io -F "url=$2"
+fi
